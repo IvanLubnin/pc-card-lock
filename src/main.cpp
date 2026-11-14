@@ -1,19 +1,20 @@
 #include <Arduino.h>
+#include "USB.h"
+#include "USBHIDKeyboard.h"
 
-constexpr uint32_t BLINK_DELAY_MS = 500;
-// GPIO16 is used as the test output.
-// Connect an LED in series with a 220-1k ohm resistor.
-constexpr uint8_t LED_PIN = 16;
+USBHIDKeyboard Keyboard;
+
+constexpr uint32_t TEXT_INTERVAL_MS = 2000;
 
 void setup() {
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW);
+  Keyboard.begin();
+  USB.begin();
+
+  // Give the computer time to enumerate the HID keyboard.
+  delay(3000);
 }
 
 void loop() {
-  digitalWrite(LED_PIN, HIGH);
-  delay(BLINK_DELAY_MS);
-
-  digitalWrite(LED_PIN, LOW);
-  delay(BLINK_DELAY_MS);
+  Keyboard.println("Test Text");
+  delay(TEXT_INTERVAL_MS);
 }
